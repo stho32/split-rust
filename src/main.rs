@@ -7,38 +7,20 @@ struct Payment {
     payed_by: String,
 }
 
+#[derive(Debug)]
 struct Liability {
     because_of_payment_id: u32,
     amount: Decimal,
+    this_one: String,
     to: String,
 }
 
-struct Member {
-    name: String,
-    liabilities: Vec<Liability>,
-}
-
-struct Group {
-    members: Vec<Member>,
-}
-
 fn main() {
-    let group = Group {
-        members: vec![
-            Member {
-                name: "Alice".to_string(),
-                liabilities: vec![],
-            },
-            Member {
-                name: "Bob".to_string(),
-                liabilities: vec![],
-            },
-            Member {
-                name: "Charlie".to_string(),
-                liabilities: vec![],
-            },
-        ],
-    };
+    let group = vec![
+        String::from("Alice"),
+        String::from("Bob"),
+        String::from("Charlie"),
+    ];
 
     let payments = vec![Payment {
         id: 1,
@@ -46,37 +28,26 @@ fn main() {
         payed_by: "Alice".to_string(),
     }];
 
+    let mut liabilities: Vec<Liability> = vec![];
+
     for payment in payments {
-        let payed_by = &mut group
-            .members
-            .iter()
-            .find(|member| member.name == payment.payed_by)
-            .unwrap();
+        let amount_per_member = (payment.amount / Decimal::from(group.len())).round_dp(2);
 
-        let amount_per_member = payment.amount / Decimal::from(group.members.len());
-
-        for member in &group.members {
-            if member.name == payed_by.name {
+        for member in &group {
+            if member == &payment.payed_by {
                 continue;
             }
 
             let liability = Liability {
                 because_of_payment_id: payment.id,
                 amount: amount_per_member,
-                to: member.name.clone(),
+                this_one: member.clone(),
+                to: payment.payed_by.clone(),
             };
 
-            payed_by.liabilities.push(liability);
+            liabilities.push(liability);
         }
     }
 
-    for member in group.members {
-        println!("{}:", member.name);
-        for liability in member.liabilities {
-            println!(
-                "  {} has to pay {} because of payment {}",
-                liability.to, liability.amount, liability.because_of_payment_id
-            );
-        }
-    }
+    println!("{:?}", liabilities);
 }
