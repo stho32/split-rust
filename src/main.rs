@@ -3,6 +3,7 @@ use rust_decimal_macros::dec;
 mod structs;
 mod payments_to_liabilities;
 mod output;
+mod normalize_liabilities;
 
 use structs::*;
 use payments_to_liabilities::calculate_detailed_liabilities;
