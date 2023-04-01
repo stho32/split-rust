@@ -10,10 +10,10 @@ pub struct Payment {
 
 #[derive(Debug)]
 pub struct Liability {
-    pub because_of_payment_id: u32,
-    pub amount: Decimal,
     pub this_one: String,
+    pub amount: Decimal,
     pub to: String,
+    pub because_of_payment_id: u32,
 }
 
 impl fmt::Display for Liability {
