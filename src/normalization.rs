@@ -3,7 +3,6 @@ use rust_decimal_macros::dec;
 use crate::structs::*;
 
 pub fn normalize_liability(liability: Liability) -> Liability {
-
     if liability.this_one > liability.to {
         let opposite_amount = dec!(-1) * liability.amount;
         
@@ -16,7 +15,18 @@ pub fn normalize_liability(liability: Liability) -> Liability {
     }
 
     return liability;
+}
 
+pub fn normalize_liabilities(liabilities: Vec<Liability>) -> Vec<Liability> {
+    let mut result = Vec::new();
+
+    for liability in liabilities {
+        result.push(
+            normalize_liability(liability)
+        );
+    }
+
+    return result;
 }
 
 #[cfg(test)]

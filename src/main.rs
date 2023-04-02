@@ -1,9 +1,10 @@
+use normalization::normalize_liabilities;
 use rust_decimal_macros::dec;
 
 mod structs;
 mod payments_to_liabilities;
 mod output;
-mod normalize_liabilities;
+mod normalization;
 
 use structs::*;
 use payments_to_liabilities::calculate_detailed_liabilities;
@@ -23,6 +24,7 @@ fn main() {
     }];
 
     let liabilities = calculate_detailed_liabilities(group, payments);
+    let liabilities = normalize_liabilities(liabilities);
     
     output::print_liabilities(&liabilities);
 }
