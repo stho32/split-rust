@@ -1,6 +1,7 @@
 use normalization::normalize_liabilities;
 use rust_decimal_macros::dec;
 
+mod denormalization;
 mod normalization;
 mod output;
 mod payments_to_liabilities;
@@ -33,11 +34,17 @@ fn main() {
             amount: dec!(10.00),
             payed_by: "Alice".to_string(),
         },
+        Payment {
+            id: 1,
+            amount: dec!(50.00),
+            payed_by: "Bob".to_string(),
+        },
     ];
 
     let liabilities = calculate_detailed_liabilities(group, payments);
     let liabilities = normalize_liabilities(liabilities);
     let liabilities = sums::group_liabilities(liabilities);
+    let liabilities = denormalization::denormalize_liabilities(liabilities);
 
     output::print_liabilities(&liabilities);
 }

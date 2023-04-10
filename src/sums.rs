@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use rust_decimal::Decimal;
-use rust_decimal_macros::dec;
 
 use crate::structs::*;
 
@@ -81,6 +80,8 @@ fn collect_sums(liabilities: Vec<Liability>) -> HashMap<String, Decimal> {
 
 #[cfg(test)]
 mod tests {
+    use rust_decimal_macros::dec;
+
     use crate::structs::Liability;
 
     use super::*;
